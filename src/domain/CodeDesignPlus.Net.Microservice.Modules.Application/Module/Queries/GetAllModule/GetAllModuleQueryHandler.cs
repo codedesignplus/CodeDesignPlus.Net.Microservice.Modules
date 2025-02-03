@@ -1,9 +1,13 @@
 namespace CodeDesignPlus.Net.Microservice.Modules.Application.Module.Queries.GetAllModule;
 
-public class GetAllModuleQueryHandler(IModuleRepository repository, IMapper mapper, IUserContext user) : IRequestHandler<GetAllModuleQuery, ModuleDto>
+public class GetAllModuleQueryHandler(IModuleRepository repository, IMapper mapper) : IRequestHandler<GetAllModuleQuery, List<ModuleDto>>
 {
-    public Task<ModuleDto> Handle(GetAllModuleQuery request, CancellationToken cancellationToken)
+    public async Task<List<ModuleDto>> Handle(GetAllModuleQuery request, CancellationToken cancellationToken)
     {
-        return Task.FromResult<ModuleDto>(default!);
+        ApplicationGuard.IsNull(request, Errors.InvalidRequest);
+
+        var modules = await repository.MatchingAsync<ModuleAggregate>(request.Criteria, cancellationToken);
+
+        return mapper.Map<List<ModuleDto>>(modules);
     }
 }

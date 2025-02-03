@@ -1,4 +1,4 @@
 namespace CodeDesignPlus.Net.Microservice.Modules.Application.Module.Queries.GetAllModule;
 
-public record GetAllModuleQuery(Guid Id) : IRequest<ModuleDto>;
+public record GetAllModuleQuery(C.Criteria Criteria) : IRequest<List<ModuleDto>>;
 

@@ -26,5 +26,5 @@ global using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands
 global using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.DeleteModule;
 global using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Queries.GetModuleById;
 global using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Queries.GetAllModule;
-global using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.ServiceAdded;
-global using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.ServiceRemoved;
+global using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.AddService;
+global using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.RemoveService;
