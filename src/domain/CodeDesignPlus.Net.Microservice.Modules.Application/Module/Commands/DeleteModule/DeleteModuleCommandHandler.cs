@@ -12,8 +12,7 @@ public class DeleteModuleCommandHandler(IModuleRepository repository, IUserConte
 
         aggregate.Delete(user.IdUser);
 
-        // TODO: Remove Guid empty
-        await repository.DeleteAsync<ModuleAggregate>(aggregate.Id, Guid.Empty, cancellationToken);
+        await repository.DeleteAsync<ModuleAggregate>(aggregate.Id, cancellationToken);
 
         await pubsub.PublishAsync(aggregate.GetAndClearEvents(), cancellationToken);
     }

@@ -8,7 +8,7 @@ public class UpdateModuleCommandHandler(IModuleRepository repository, IUserConte
     {
         ApplicationGuard.IsNull(request, Errors.InvalidRequest);
 
-        var module = await repository.FindAsync<ModuleAggregate>(request.Id, user.Tenant, cancellationToken);
+        var module = await repository.FindAsync<ModuleAggregate>(request.Id, cancellationToken);
 
         ApplicationGuard.IsNull(module, Errors.ModuleNotFound);
 
