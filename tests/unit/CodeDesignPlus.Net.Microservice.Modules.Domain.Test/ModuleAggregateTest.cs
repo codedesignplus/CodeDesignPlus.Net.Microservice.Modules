@@ -91,12 +91,13 @@ public class ModuleAggregateTest
         var controller = "TestController";
         var action = "TestAction";
         var addedBy = Guid.NewGuid();
+        var httpMethod = Enums.HttpMethod.GET;
 
         // Act
-        module.AddService(serviceId, serviceName, controller, action, addedBy);
+        module.AddService(serviceId, serviceName, controller, action,  httpMethod, addedBy);
 
         // Assert
-        Assert.Contains(module.Services, s => s.Id == serviceId && s.Name == serviceName && s.Controller == controller && s.Action == action);
+        Assert.Contains(module.Services, s => s.Id == serviceId && s.Name == serviceName && s.Controller == controller && s.Action == action && s.HttpMethod == httpMethod);
     }
 
     [Fact]
@@ -115,7 +116,9 @@ public class ModuleAggregateTest
         var controller = "TestController";
         var action = "TestAction";
         var addedBy = Guid.NewGuid();
-        module.AddService(serviceId, serviceName, controller, action, addedBy);
+        var httpMethod = Enums.HttpMethod.GET;
+        
+        module.AddService(serviceId, serviceName, controller, action, httpMethod, addedBy);
 
         var removedBy = Guid.NewGuid();
 

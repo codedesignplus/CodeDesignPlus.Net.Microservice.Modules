@@ -58,20 +58,22 @@ public class ModuleAggregate(Guid id) : AggregateRootBase(id)
         AddEvent(ModuleDeletedDomainEvent.Create(Id, Name, Description, Services, IsActive));
     }
 
-    public void AddService(Guid id, string name, string controller, string action, Guid addedBy)
+    public void AddService(Guid id, string name, string controller, string action, Enums.HttpMethod httpMethod, Guid addedBy)
     {
         DomainGuard.GuidIsEmpty(id, Errors.IdServiceIsInvalid);
         DomainGuard.GuidIsEmpty(addedBy, Errors.IdUserIsInvalid);
         DomainGuard.IsNullOrEmpty(name, Errors.NameServiceIsInvalid);
         DomainGuard.IsNullOrEmpty(controller, Errors.ControllerServiceIsInvalid);
         DomainGuard.IsNullOrEmpty(action, Errors.ActionServiceIsInvalid);
+        DomainGuard.IsTrue(httpMethod == Enums.HttpMethod.None, Errors.HttpMethodServiceIsInvalid);
 
         var service = new ServiceEntity
         {
             Id = id,
             Name = name,
             Controller = controller,
-            Action = action
+            Action = action,
+            HttpMethod = httpMethod
         };
 
         Services.Add(service);

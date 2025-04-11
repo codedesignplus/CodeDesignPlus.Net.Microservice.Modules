@@ -13,5 +13,5 @@ public class Errors : IErrorCodes
     public const string ActionServiceIsInvalid = "107 : The action of the service is invalid.";
     public const string ServiceNotFound = "108 : The service was not found.";
     public const string IdServiceIsInvalid = "109 : The id of the service is invalid.";
-
+    public const string HttpMethodServiceIsInvalid = "110 : The http method of the service is invalid.";
 }

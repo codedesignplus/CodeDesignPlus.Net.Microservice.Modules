@@ -9,4 +9,5 @@ public class ServiceEntity : IEntityBase
     public required string Controller { get; set; }
 
     public required string Action { get; set; }
+    public Domain.Enums.HttpMethod HttpMethod { get; set; } = Domain.Enums.HttpMethod.None;
 }

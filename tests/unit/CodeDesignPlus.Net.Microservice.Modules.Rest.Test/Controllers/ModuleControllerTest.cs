@@ -135,7 +135,7 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Rest.Test.Controllers
             var cancellationToken = new CancellationToken();
             mapperMock
                 .Setup(m => m.Map<AddServiceCommand>(data))
-                .Returns(new AddServiceCommand(id, Guid.NewGuid(), data.Name, data.Controller, data.Action));
+                .Returns(new AddServiceCommand(id, Guid.NewGuid(), data.Name, data.Controller, data.Action, data.HttpMethod));
 
             // Act
             var result = await controller.AddService(id, data, cancellationToken);

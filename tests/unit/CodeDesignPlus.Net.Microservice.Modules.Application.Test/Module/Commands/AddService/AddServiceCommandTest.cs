@@ -15,7 +15,7 @@ public class AddServiceCommandTest
     [Fact]
     public void Should_Have_Error_When_Id_Is_Empty()
     {
-        var command = new AddServiceCommand(Guid.Empty, Guid.NewGuid(), "ServiceName", "ControllerName", "ActionName");
+        var command = new AddServiceCommand(Guid.Empty, Guid.NewGuid(), "ServiceName", "ControllerName", "ActionName", Domain.Enums.HttpMethod.GET);
         var result = validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Id);
     }
@@ -23,7 +23,7 @@ public class AddServiceCommandTest
     [Fact]
     public void Should_Have_Error_When_Name_Is_Empty()
     {
-        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "ControllerName", "ActionName");
+        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "ControllerName", "ActionName",Domain.Enums.HttpMethod.GET);
         var result = validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
@@ -31,7 +31,7 @@ public class AddServiceCommandTest
     [Fact]
     public void Should_Have_Error_When_Name_Exceeds_MaxLength()
     {
-        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), new string('a', 129), "ControllerName", "ActionName");
+        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), new string('a', 129), "ControllerName", "ActionName", Domain.Enums.HttpMethod.GET);
         var result = validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
@@ -39,7 +39,7 @@ public class AddServiceCommandTest
     [Fact]
     public void Should_Have_Error_When_Controller_Is_Empty()
     {
-        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "ServiceName", string.Empty, "ActionName");
+        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "ServiceName", string.Empty, "ActionName", Domain.Enums.HttpMethod.GET);
         var result = validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Controller);
     }
@@ -47,7 +47,7 @@ public class AddServiceCommandTest
     [Fact]
     public void Should_Have_Error_When_Controller_Exceeds_MaxLength()
     {
-        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "ServiceName", new string('a', 65), "ActionName");
+        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "ServiceName", new string('a', 65), "ActionName", Domain.Enums.HttpMethod.GET);
         var result = validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Controller);
     }
@@ -55,15 +55,23 @@ public class AddServiceCommandTest
     [Fact]
     public void Should_Have_Error_When_Action_Is_Empty()
     {
-        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "ServiceName", "ControllerName", string.Empty);
+        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "ServiceName", "ControllerName", string.Empty, Domain.Enums.HttpMethod.GET);
         var result = validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Action);
     }
 
     [Fact]
+    public void Should_Have_Error_When_HttpMethod_Is_None()
+    {
+        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "ServiceName", "ControllerName", "ActionName", Domain.Enums.HttpMethod.None);
+        var result = validator.TestValidate(command);
+        result.ShouldHaveValidationErrorFor(x => x.HttpMethod);
+    }
+
+    [Fact]
     public void Should_Have_Error_When_Action_Exceeds_MaxLength()
     {
-        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "ServiceName", "ControllerName", new string('a', 65));
+        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "ServiceName", "ControllerName", new string('a', 65), Domain.Enums.HttpMethod.GET);
         var result = validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Action);
     }
@@ -71,7 +79,7 @@ public class AddServiceCommandTest
     [Fact]
     public void Should_Not_Have_Error_When_Command_Is_Valid()
     {
-        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "ServiceName", "ControllerName", "ActionName");
+        var command = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "ServiceName", "ControllerName", "ActionName", Domain.Enums.HttpMethod.GET);
         var result = validator.TestValidate(command);
         result.ShouldNotHaveAnyValidationErrors();
     }
