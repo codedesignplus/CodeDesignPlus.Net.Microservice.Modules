@@ -15,6 +15,7 @@ using Xunit;
 using CodeDesignPlus.Net.Microservice.Modules.Application.Module.DataTransferObjects;
 using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.DeleteModule;
 using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.RemoveService;
+using CodeDesignPlus.Net.Core.Abstractions.Models.Pager;
 
 namespace CodeDesignPlus.Net.Microservice.Modules.Rest.Test.Controllers
 {
@@ -39,14 +40,14 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Rest.Test.Controllers
             var cancellationToken = new CancellationToken();
             mediatorMock
                 .Setup(m => m.Send(It.IsAny<GetAllModuleQuery>(), cancellationToken))
-                .ReturnsAsync([]);
+                .ReturnsAsync(Pagination<ModuleDto>.Create([], 0, 10, 0));
 
             // Act
             var result = await controller.GetModules(criteria, cancellationToken);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.IsType<List<ModuleDto>>(okResult.Value);
+            Assert.IsType<Pagination<ModuleDto>>(okResult.Value);
             mediatorMock.Verify(m => m.Send(It.IsAny<GetAllModuleQuery>(), cancellationToken), Times.Once);
         }
 

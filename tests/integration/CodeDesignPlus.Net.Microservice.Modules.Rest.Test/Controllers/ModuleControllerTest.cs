@@ -1,4 +1,5 @@
 using System;
+using CodeDesignPlus.Net.Core.Abstractions.Models.Pager;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using NodaTime.Serialization.SystemTextJson;
 
@@ -46,11 +47,11 @@ public class ModuleControllerTest : ServerBase<Program>, IClassFixture<Server<Pr
 
         var json = await response.Content.ReadAsStringAsync();
 
-        var modules = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<ModuleDto>>(json, this.options);
+        var modules = System.Text.Json.JsonSerializer.Deserialize<Pagination<ModuleDto>>(json, this.options);
 
         Assert.NotNull(modules);
-        Assert.NotEmpty(modules);
-        Assert.Contains(modules, x => x.Id == module.Id);
+        Assert.NotEmpty(modules.Data);
+        Assert.Contains(modules.Data, x => x.Id == module.Id);
     }
 
     [Fact]

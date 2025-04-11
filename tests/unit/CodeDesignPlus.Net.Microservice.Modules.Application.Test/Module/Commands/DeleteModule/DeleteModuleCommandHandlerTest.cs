@@ -26,7 +26,7 @@ public class DeleteModuleCommandHandlerTest
     public async Task Handle_RequestIsNull_ThrowsCodeDesignPlusException()
     {
         // Arrange
-        DeleteModuleCommand request = null;
+        DeleteModuleCommand request = null!;
         var cancellationToken = CancellationToken.None;
 
         // Act & Assert
