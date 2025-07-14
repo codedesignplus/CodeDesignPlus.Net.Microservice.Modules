@@ -51,9 +51,10 @@ public class ModuleAggregate(Guid id) : AggregateRootBase(id)
     {
         DomainGuard.GuidIsEmpty(deletedBy, Errors.IdUserIsInvalid);
 
+        IsDeleted = true;
         IsActive = false;
-        UpdatedAt = SystemClock.Instance.GetCurrentInstant();
-        UpdatedBy = deletedBy;
+        DeletedAt = SystemClock.Instance.GetCurrentInstant();
+        DeletedBy = deletedBy;
 
         AddEvent(ModuleDeletedDomainEvent.Create(Id, Name, Description, Services, IsActive));
     }
@@ -89,7 +90,7 @@ public class ModuleAggregate(Guid id) : AggregateRootBase(id)
 
         var service = Services.FirstOrDefault(x => x.Id == idService);
 
-        DomainGuard.IsNull(service, Errors.ServiceNotFound);
+        DomainGuard.IsNull(service!, Errors.ServiceNotFound);
 
         Services.Remove(service);
         UpdatedAt = SystemClock.Instance.GetCurrentInstant();
