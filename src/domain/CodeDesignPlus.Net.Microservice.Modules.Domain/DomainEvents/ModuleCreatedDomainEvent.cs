@@ -2,7 +2,7 @@ using CodeDesignPlus.Net.Microservice.Modules.Domain.Entities;
 
 namespace CodeDesignPlus.Net.Microservice.Modules.Domain.DomainEvents;
 
-[EventKey<ModuleAggregate>(1, "ModuleCreatedDomainEvent")]
+[EventKey<ModuleAggregate>(1, "ModuleCreatedDomainEvent", autoCreate: false)]
 public class ModuleCreatedDomainEvent(
     Guid aggregateId,
     string name, 
