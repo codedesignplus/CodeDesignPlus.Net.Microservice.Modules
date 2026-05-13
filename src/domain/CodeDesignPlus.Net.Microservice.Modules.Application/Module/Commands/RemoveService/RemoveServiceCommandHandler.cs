@@ -1,6 +1,6 @@
 namespace CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.RemoveService;
 
-public class RemoveServiceCommandHandler(IModuleRepository repository, IUserContext user, IPubSub pubsub) : IRequestHandler<RemoveServiceCommand>
+public class RemoveServiceCommandHandler(IModuleRepository repository, IUserContext user, IPubSub pubsub, ICacheManager cacheManager) : IRequestHandler<RemoveServiceCommand>
 {
     public async Task Handle(RemoveServiceCommand request, CancellationToken cancellationToken)
     {        
@@ -15,5 +15,7 @@ public class RemoveServiceCommandHandler(IModuleRepository repository, IUserCont
         await repository.UpdateAsync(module, cancellationToken);
 
         await pubsub.PublishAsync(module.GetAndClearEvents(), cancellationToken);
+
+        await cacheManager.SetAsync(module.Id.ToString(), module);
     }
 }

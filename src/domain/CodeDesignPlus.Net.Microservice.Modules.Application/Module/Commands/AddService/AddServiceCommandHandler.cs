@@ -2,7 +2,7 @@ using CodeDesignPlus.Net.Microservice.Modules.Domain.Entities;
 
 namespace CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.AddService;
 
-public class AddServiceCommandHandler(IModuleRepository repository, IUserContext user, IPubSub pubsub) : IRequestHandler<AddServiceCommand>
+public class AddServiceCommandHandler(IModuleRepository repository, IUserContext user, IPubSub pubsub, ICacheManager cacheManager) : IRequestHandler<AddServiceCommand>
 {
     public async Task Handle(AddServiceCommand request, CancellationToken cancellationToken)
     {
@@ -17,5 +17,7 @@ public class AddServiceCommandHandler(IModuleRepository repository, IUserContext
         await repository.UpdateAsync(module, cancellationToken);
 
         await pubsub.PublishAsync(module.GetAndClearEvents(), cancellationToken);
+
+        await cacheManager.SetAsync(module.Id.ToString(), module);
     }
 }

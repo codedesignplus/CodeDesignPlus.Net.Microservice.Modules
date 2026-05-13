@@ -1,6 +1,6 @@
 namespace CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.DeleteModule;
 
-public class DeleteModuleCommandHandler(IModuleRepository repository, IUserContext user, IPubSub pubsub) : IRequestHandler<DeleteModuleCommand>
+public class DeleteModuleCommandHandler(IModuleRepository repository, IUserContext user, IPubSub pubsub, ICacheManager cacheManager) : IRequestHandler<DeleteModuleCommand>
 {
     public async Task Handle(DeleteModuleCommand request, CancellationToken cancellationToken)
     {        
@@ -15,5 +15,7 @@ public class DeleteModuleCommandHandler(IModuleRepository repository, IUserConte
         await repository.DeleteAsync<ModuleAggregate>(aggregate.Id, cancellationToken);
 
         await pubsub.PublishAsync(aggregate.GetAndClearEvents(), cancellationToken);
+
+        await cacheManager.RemoveAsync(aggregate.Id.ToString());
     }
 }
