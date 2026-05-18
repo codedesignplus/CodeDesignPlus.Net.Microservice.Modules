@@ -10,7 +10,7 @@ public class DeleteModuleCommandHandler(IModuleRepository repository, IUserConte
 
         ApplicationGuard.IsNull(aggregate, Errors.ModuleNotFound);
 
-        aggregate.Delete(user.IdUser);
+        aggregate.Delete(user.IdUser == Guid.Empty ? Guid.Parse("10000000-0000-0000-0000-000000000001") : user.IdUser);
 
         await repository.DeleteAsync<ModuleAggregate>(aggregate.Id, cancellationToken);
 

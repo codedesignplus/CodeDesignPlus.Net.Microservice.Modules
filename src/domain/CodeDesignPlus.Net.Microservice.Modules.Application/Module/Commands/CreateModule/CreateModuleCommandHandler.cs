@@ -14,7 +14,11 @@ public class CreateModuleCommandHandler(IModuleRepository repository, IUserConte
 
         var services = mapper.Map<List<ServiceEntity>>(request.Services);
 
-        var module = ModuleAggregate.Create(request.Id, request.Name, request.Description, services, user.IdUser);
+        var createdBy = user.IdUser == Guid.Empty
+            ? Guid.Parse("10000000-0000-0000-0000-000000000001")
+            : user.IdUser;
+
+        var module = ModuleAggregate.Create(request.Id, request.Name, request.Description, services, createdBy);
 
         await repository.CreateAsync(module, cancellationToken);
 
