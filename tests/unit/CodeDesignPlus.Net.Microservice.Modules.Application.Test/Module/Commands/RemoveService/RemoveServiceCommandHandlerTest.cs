@@ -13,6 +13,7 @@ public class RemoveServiceCommandHandlerTest
     private readonly Mock<IModuleRepository> repositoryMock;
     private readonly Mock<IUserContext> userContextMock;
     private readonly Mock<IPubSub> pubSubMock;
+    private readonly Mock<ICacheManager> cacheManagerMock;
     private readonly RemoveServiceCommandHandler handler;
     private readonly ServiceEntity service = new ()
     {
@@ -28,7 +29,8 @@ public class RemoveServiceCommandHandlerTest
         repositoryMock = new Mock<IModuleRepository>();
         userContextMock = new Mock<IUserContext>();
         pubSubMock = new Mock<IPubSub>();
-        handler = new RemoveServiceCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object);
+        cacheManagerMock = new Mock<ICacheManager>();
+        handler = new RemoveServiceCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object, cacheManagerMock.Object);
     }
 
     [Fact]

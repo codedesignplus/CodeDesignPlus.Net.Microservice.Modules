@@ -1,3 +1,4 @@
+global using CodeDesignPlus.Net.Cache.Abstractions;
 global using CodeDesignPlus.Net.Core.Abstractions;
 global using CodeDesignPlus.Net.Exceptions.Extensions;
 global using CodeDesignPlus.Net.PubSub.Abstractions;

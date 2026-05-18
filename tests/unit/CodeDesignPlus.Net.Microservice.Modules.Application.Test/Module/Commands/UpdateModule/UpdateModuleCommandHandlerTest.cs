@@ -14,6 +14,7 @@ public class UpdateModuleCommandHandlerTest
     private readonly Mock<IUserContext> userContextMock;
     private readonly Mock<IPubSub> pubSubMock;
     private readonly Mock<IMapper> mapperMock;
+    private readonly Mock<ICacheManager> cacheManagerMock;
     private readonly UpdateModuleCommandHandler handler;
     private readonly ServiceEntity serviceEntity;
     private readonly ServiceDto serviceDto;
@@ -40,7 +41,8 @@ public class UpdateModuleCommandHandlerTest
         userContextMock = new Mock<IUserContext>();
         pubSubMock = new Mock<IPubSub>();
         mapperMock = new Mock<IMapper>();
-        handler = new UpdateModuleCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object, mapperMock.Object);
+        cacheManagerMock = new Mock<ICacheManager>();
+        handler = new UpdateModuleCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object, mapperMock.Object, cacheManagerMock.Object);
     }
 
     [Fact]

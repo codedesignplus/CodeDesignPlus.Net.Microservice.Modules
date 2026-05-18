@@ -13,6 +13,7 @@ public class AddServiceCommandHandlerTest
     private readonly Mock<IModuleRepository> repositoryMock;
     private readonly Mock<IUserContext> userContextMock;
     private readonly Mock<IPubSub> pubSubMock;
+    private readonly Mock<ICacheManager> cacheManagerMock;
     private readonly AddServiceCommandHandler handler;
 
     public AddServiceCommandHandlerTest()
@@ -20,7 +21,8 @@ public class AddServiceCommandHandlerTest
         repositoryMock = new Mock<IModuleRepository>();
         userContextMock = new Mock<IUserContext>();
         pubSubMock = new Mock<IPubSub>();
-        handler = new AddServiceCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object);
+        cacheManagerMock = new Mock<ICacheManager>();
+        handler = new AddServiceCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object, cacheManagerMock.Object);
     }
 
     [Fact]

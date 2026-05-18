@@ -12,6 +12,7 @@ public class DeleteModuleCommandHandlerTest
     private readonly Mock<IModuleRepository> repositoryMock;
     private readonly Mock<IUserContext> userContextMock;
     private readonly Mock<IPubSub> pubSubMock;
+    private readonly Mock<ICacheManager> cacheManagerMock;
     private readonly DeleteModuleCommandHandler handler;
 
     public DeleteModuleCommandHandlerTest()
@@ -19,7 +20,8 @@ public class DeleteModuleCommandHandlerTest
         repositoryMock = new Mock<IModuleRepository>();
         userContextMock = new Mock<IUserContext>();
         pubSubMock = new Mock<IPubSub>();
-        handler = new DeleteModuleCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object);
+        cacheManagerMock = new Mock<ICacheManager>();
+        handler = new DeleteModuleCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object, cacheManagerMock.Object);
     }
 
     [Fact]
