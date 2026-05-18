@@ -17,7 +17,7 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
         [Fact]
         public void Should_Have_Error_When_Id_Is_Empty()
         {
-            var command = new UpdateModuleCommand(Guid.Empty, "ValidName", "ValidDescription", [], true);
+            var command = new UpdateModuleCommand(Guid.Empty, "ValidName", "ValidDescription", [], true, Guid.NewGuid());
             var result = validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor(x => x.Id);
         }
@@ -25,7 +25,7 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
         [Fact]
         public void Should_Have_Error_When_Name_Is_Empty()
         {
-            var command = new UpdateModuleCommand(Guid.NewGuid(), string.Empty, "ValidDescription", [], true);
+            var command = new UpdateModuleCommand(Guid.NewGuid(), string.Empty, "ValidDescription", [], true, Guid.NewGuid());
             var result = validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor(x => x.Name);
         }
@@ -33,7 +33,7 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
         [Fact]
         public void Should_Have_Error_When_Name_Exceeds_MaxLength()
         {
-            var command = new UpdateModuleCommand(Guid.NewGuid(), new string('a', 129), "ValidDescription", [], true);
+            var command = new UpdateModuleCommand(Guid.NewGuid(), new string('a', 129), "ValidDescription", [], true, Guid.NewGuid());
             var result = validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor(x => x.Name);
         }
@@ -41,7 +41,7 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
         [Fact]
         public void Should_Have_Error_When_Description_Is_Empty()
         {
-            var command = new UpdateModuleCommand(Guid.NewGuid(), "ValidName", string.Empty, [], true);
+            var command = new UpdateModuleCommand(Guid.NewGuid(), "ValidName", string.Empty, [], true, Guid.NewGuid());
             var result = validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor(x => x.Description);
         }
@@ -49,7 +49,7 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
         [Fact]
         public void Should_Have_Error_When_Description_Exceeds_MaxLength()
         {
-            var command = new UpdateModuleCommand(Guid.NewGuid(), "ValidName", new string('a', 513), [], true);
+            var command = new UpdateModuleCommand(Guid.NewGuid(), "ValidName", new string('a', 513), [], true, Guid.NewGuid());
             var result = validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor(x => x.Description);
         }
@@ -57,7 +57,7 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
         [Fact]
         public void Should_Not_Have_Error_When_Command_Is_Valid()
         {
-            var command = new UpdateModuleCommand(Guid.NewGuid(), "ValidName", "ValidDescription", [], true);
+            var command = new UpdateModuleCommand(Guid.NewGuid(), "ValidName", "ValidDescription", [], true, Guid.NewGuid());
             var result = validator.TestValidate(command);
             result.ShouldNotHaveAnyValidationErrors();
         }

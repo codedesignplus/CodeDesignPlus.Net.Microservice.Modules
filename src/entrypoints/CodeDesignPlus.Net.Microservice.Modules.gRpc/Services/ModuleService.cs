@@ -6,14 +6,15 @@ using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.Remove
 using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.UpdateModule;
 using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Queries.GetAllModule;
 using CodeDesignPlus.Net.Microservice.Modules.Application.Module.Queries.GetModuleById;
-using CodeDesignPlus.Net.Security.Abstractions;
 using Google.Protobuf.WellKnownTypes;
 using C = CodeDesignPlus.Net.Core.Abstractions.Models.Criteria;
 
 namespace CodeDesignPlus.Net.Microservice.Modules.gRpc.Services;
 
-public class ModuleService(IMediator mediator, IMapper mapper, IUserContext user) : Module.ModuleBase
+public class ModuleService(IMediator mediator, IMapper mapper) : Module.ModuleBase
 {
+    private static readonly Guid SystemUserId = Guid.Parse("10000000-0000-0000-0000-000000000001");
+
     public override async Task<Empty> CreateModule(CreateModuleRequest request, ServerCallContext context)
     {
         DomainGuard.IsFalse(Guid.TryParse(request.Id, out var id), "Invalid module ID");
@@ -27,7 +28,7 @@ public class ModuleService(IMediator mediator, IMapper mapper, IUserContext user
             HttpMethod = System.Enum.TryParse<Domain.Enums.HttpMethod>(s.HttpMethod, true, out var method) ? method : Domain.Enums.HttpMethod.None
         }).ToList();
 
-        var command = new CreateModuleCommand(id, request.Name, request.Description, services);
+        var command = new CreateModuleCommand(id, request.Name, request.Description, services, SystemUserId);
 
         await mediator.Send(command, context.CancellationToken);
 
@@ -47,7 +48,7 @@ public class ModuleService(IMediator mediator, IMapper mapper, IUserContext user
             HttpMethod = System.Enum.TryParse<Domain.Enums.HttpMethod>(s.HttpMethod, true, out var method) ? method : Domain.Enums.HttpMethod.None
         }).ToList();
 
-        var command = new UpdateModuleCommand(id, request.Name, request.Description, services, request.IsActive);
+        var command = new UpdateModuleCommand(id, request.Name, request.Description, services, request.IsActive, SystemUserId);
 
         await mediator.Send(command, context.CancellationToken);
 
@@ -58,7 +59,7 @@ public class ModuleService(IMediator mediator, IMapper mapper, IUserContext user
     {
         DomainGuard.IsFalse(Guid.TryParse(request.Id, out var id), "Invalid module ID");
 
-        await mediator.Send(new DeleteModuleCommand(id), context.CancellationToken);
+        await mediator.Send(new DeleteModuleCommand(id, SystemUserId), context.CancellationToken);
 
         return new Empty();
     }
@@ -82,11 +83,7 @@ public class ModuleService(IMediator mediator, IMapper mapper, IUserContext user
 
         var result = await mediator.Send(new GetAllModuleQuery(criteria), context.CancellationToken);
 
-        var response = new GetAllModulesResponse
-        {
-            TotalCount = result.TotalCount
-        };
-
+        var response = new GetAllModulesResponse { TotalCount = result.TotalCount };
         response.Modules.AddRange(result.Data.Select(MapToResponse));
 
         return response;
@@ -98,10 +95,9 @@ public class ModuleService(IMediator mediator, IMapper mapper, IUserContext user
         DomainGuard.IsFalse(Guid.TryParse(request.ServiceId, out var serviceId), "Invalid service ID");
 
         var httpMethod = System.Enum.TryParse<Domain.Enums.HttpMethod>(request.HttpMethod, true, out var method)
-            ? method
-            : Domain.Enums.HttpMethod.None;
+            ? method : Domain.Enums.HttpMethod.None;
 
-        var command = new AddServiceCommand(moduleId, serviceId, request.Name, request.Controller, request.Action, httpMethod);
+        var command = new AddServiceCommand(moduleId, serviceId, request.Name, request.Controller, request.Action, httpMethod, SystemUserId);
 
         await mediator.Send(command, context.CancellationToken);
 
@@ -113,7 +109,7 @@ public class ModuleService(IMediator mediator, IMapper mapper, IUserContext user
         DomainGuard.IsFalse(Guid.TryParse(request.ModuleId, out var moduleId), "Invalid module ID");
         DomainGuard.IsFalse(Guid.TryParse(request.ServiceId, out var serviceId), "Invalid service ID");
 
-        await mediator.Send(new RemoveServiceCommand(moduleId, serviceId), context.CancellationToken);
+        await mediator.Send(new RemoveServiceCommand(moduleId, serviceId, SystemUserId), context.CancellationToken);
 
         return new Empty();
     }

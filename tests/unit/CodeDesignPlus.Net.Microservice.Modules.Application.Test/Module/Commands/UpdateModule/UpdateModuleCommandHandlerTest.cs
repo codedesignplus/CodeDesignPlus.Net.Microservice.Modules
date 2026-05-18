@@ -42,7 +42,7 @@ public class UpdateModuleCommandHandlerTest
         pubSubMock = new Mock<IPubSub>();
         mapperMock = new Mock<IMapper>();
         cacheManagerMock = new Mock<ICacheManager>();
-        handler = new UpdateModuleCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object, mapperMock.Object, cacheManagerMock.Object);
+        handler = new UpdateModuleCommandHandler(repositoryMock.Object, pubSubMock.Object, mapperMock.Object, cacheManagerMock.Object);
     }
 
     [Fact]
@@ -64,7 +64,7 @@ public class UpdateModuleCommandHandlerTest
     public async Task Handle_ModuleNotFound_ThrowsCodeDesignPlusException()
     {
         // Arrange
-        var request = new UpdateModuleCommand(Guid.NewGuid(), "Test Module", "Test Description", [serviceDto], true);
+        var request = new UpdateModuleCommand(Guid.NewGuid(), "Test Module", "Test Description", [serviceDto], true, Guid.NewGuid());
         var cancellationToken = CancellationToken.None;
 
         repositoryMock
@@ -81,7 +81,7 @@ public class UpdateModuleCommandHandlerTest
         // Arrange
         var cancellationToken = CancellationToken.None;
         var module = ModuleAggregate.Create(Guid.NewGuid(), "Test Module", "Test Description", [], Guid.NewGuid());
-        var request = new UpdateModuleCommand(module.Id, "Test Module", "Test Description", [serviceDto], true);
+        var request = new UpdateModuleCommand(module.Id, "Test Module", "Test Description", [serviceDto], true, Guid.NewGuid());
 
         repositoryMock
             .Setup(r => r.FindAsync<ModuleAggregate>(It.IsAny<Guid>(), cancellationToken))

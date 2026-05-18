@@ -5,6 +5,7 @@ global using CodeDesignPlus.Net.Observability.Extensions;
 global using CodeDesignPlus.Net.RabbitMQ.Extensions;
 global using CodeDesignPlus.Net.Redis.Extensions;
 global using CodeDesignPlus.Net.Security.Extensions;
+global using CodeDesignPlus.Net.Security.Abstractions;
 global using Mapster;
 global using MapsterMapper;
 global using MediatR;

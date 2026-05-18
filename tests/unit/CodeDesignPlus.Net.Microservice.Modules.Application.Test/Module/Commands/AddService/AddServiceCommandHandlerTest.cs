@@ -22,7 +22,7 @@ public class AddServiceCommandHandlerTest
         userContextMock = new Mock<IUserContext>();
         pubSubMock = new Mock<IPubSub>();
         cacheManagerMock = new Mock<ICacheManager>();
-        handler = new AddServiceCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object, cacheManagerMock.Object);
+        handler = new AddServiceCommandHandler(repositoryMock.Object, pubSubMock.Object, cacheManagerMock.Object);
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public class AddServiceCommandHandlerTest
     public async Task Handle_ModuleNotFound_ThrowsCodeDesignPlusException()
     {
         // Arrange
-        var request = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "TestService", "TestController", "TestAction", Domain.Enums.HttpMethod.GET);
+        var request = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "TestService", "TestController", "TestAction", Domain.Enums.HttpMethod.GET, Guid.NewGuid());
         var cancellationToken = CancellationToken.None;
 
         repositoryMock.Setup(r => r.FindAsync<ModuleAggregate>(It.IsAny<Guid>(), cancellationToken))
@@ -62,7 +62,7 @@ public class AddServiceCommandHandlerTest
     public async Task Handle_ValidRequest_UpdatesModuleAndPublishesEvents()
     {
         // Arrange
-        var request = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "TestService", "TestController", "TestAction", Domain.Enums.HttpMethod.GET);
+        var request = new AddServiceCommand(Guid.NewGuid(), Guid.NewGuid(), "TestService", "TestController", "TestAction", Domain.Enums.HttpMethod.GET, Guid.NewGuid());
         var cancellationToken = CancellationToken.None;
         var module = ModuleAggregate.Create(Guid.NewGuid(), "TestModule", "TestDescription", [], Guid.NewGuid());
 

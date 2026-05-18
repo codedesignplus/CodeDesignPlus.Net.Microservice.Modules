@@ -30,7 +30,7 @@ public class RemoveServiceCommandHandlerTest
         userContextMock = new Mock<IUserContext>();
         pubSubMock = new Mock<IPubSub>();
         cacheManagerMock = new Mock<ICacheManager>();
-        handler = new RemoveServiceCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object, cacheManagerMock.Object);
+        handler = new RemoveServiceCommandHandler(repositoryMock.Object, pubSubMock.Object, cacheManagerMock.Object);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class RemoveServiceCommandHandlerTest
     public async Task Handle_ModuleNotFound_ThrowsCodeDesignPlusException()
     {
         // Arrange
-        var request = new RemoveServiceCommand(Guid.NewGuid(), Guid.NewGuid());
+        var request = new RemoveServiceCommand(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid());
         var cancellationToken = CancellationToken.None;
 
         repositoryMock
@@ -71,7 +71,7 @@ public class RemoveServiceCommandHandlerTest
     public async Task Handle_ValidRequest_RemovesServiceAndPublishesEvents()
     {
         // Arrange
-        var request = new RemoveServiceCommand(Guid.NewGuid(), service.Id);
+        var request = new RemoveServiceCommand(Guid.NewGuid(), service.Id, Guid.NewGuid());
         var cancellationToken = CancellationToken.None;
         var module = ModuleAggregate.Create(request.Id, "TestModule", "TestDescription", [service], Guid.NewGuid());
 

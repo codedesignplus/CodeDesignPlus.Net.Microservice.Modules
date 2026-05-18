@@ -1,7 +1,7 @@
 namespace CodeDesignPlus.Net.Microservice.Modules.Application.Module.Commands.AddService;
 
 [DtoGenerator]
-public record AddServiceCommand(Guid Id, Guid IdService, string Name, string Controller, string Action, Domain.Enums.HttpMethod HttpMethod) : IRequest;
+public record AddServiceCommand(Guid Id, Guid IdService, string Name, string Controller, string Action, Domain.Enums.HttpMethod HttpMethod, Guid ActorId) : IRequest;
 
 public class Validator : AbstractValidator<AddServiceCommand>
 {
@@ -12,5 +12,6 @@ public class Validator : AbstractValidator<AddServiceCommand>
         RuleFor(x => x.Controller).NotEmpty().NotNull().MaximumLength(64);
         RuleFor(x => x.Action).NotEmpty().NotNull().MaximumLength(64);
         RuleFor(x => x.HttpMethod).IsInEnum().NotEqual(Domain.Enums.HttpMethod.None);
+        RuleFor(x => x.ActorId).NotEmpty().NotNull();
     }
 }

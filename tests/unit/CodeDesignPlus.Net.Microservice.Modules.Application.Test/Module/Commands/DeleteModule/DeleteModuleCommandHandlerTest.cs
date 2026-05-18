@@ -21,7 +21,7 @@ public class DeleteModuleCommandHandlerTest
         userContextMock = new Mock<IUserContext>();
         pubSubMock = new Mock<IPubSub>();
         cacheManagerMock = new Mock<ICacheManager>();
-        handler = new DeleteModuleCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object, cacheManagerMock.Object);
+        handler = new DeleteModuleCommandHandler(repositoryMock.Object, pubSubMock.Object, cacheManagerMock.Object);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class DeleteModuleCommandHandlerTest
     public async Task Handle_ModuleNotFound_ThrowsCodeDesignPlusException()
     {
         // Arrange
-        var request = new DeleteModuleCommand(Guid.NewGuid());
+        var request = new DeleteModuleCommand(Guid.NewGuid(), Guid.NewGuid());
         var cancellationToken = CancellationToken.None;
 
         repositoryMock
@@ -62,7 +62,7 @@ public class DeleteModuleCommandHandlerTest
     public async Task Handle_ValidRequest_DeletesModuleAndPublishesEvents()
     {
         // Arrange
-        var request = new DeleteModuleCommand(Guid.NewGuid());
+        var request = new DeleteModuleCommand(Guid.NewGuid(), Guid.NewGuid());
         var cancellationToken = CancellationToken.None;
         var moduleAggregate = ModuleAggregate.Create(Guid.NewGuid(), "Test Module", "Test Description", [], Guid.NewGuid());
 

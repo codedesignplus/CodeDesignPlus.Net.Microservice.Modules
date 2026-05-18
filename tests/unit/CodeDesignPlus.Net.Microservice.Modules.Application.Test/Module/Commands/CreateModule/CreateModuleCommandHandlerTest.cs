@@ -23,7 +23,7 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
             pubSubMock = new Mock<IPubSub>();
             mapperMock = new Mock<IMapper>();
 
-            handler = new CreateModuleCommandHandler(repositoryMock.Object, userContextMock.Object, pubSubMock.Object, mapperMock.Object);
+            handler = new CreateModuleCommandHandler(repositoryMock.Object, pubSubMock.Object, mapperMock.Object);
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
         public async Task Handle_ModuleAlreadyExists_ThrowsCodeDesignPlusException()
         {
             // Arrange
-            var request = new CreateModuleCommand(Guid.NewGuid(), "Test Module", "Test Description", []);
+            var request = new CreateModuleCommand(Guid.NewGuid(), "Test Module", "Test Description", [], Guid.NewGuid());
             var cancellationToken = CancellationToken.None;
 
             repositoryMock.Setup(x => x.ExistsAsync<ModuleAggregate>(request.Id, cancellationToken)).ReturnsAsync(true);
@@ -62,7 +62,7 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
         public async Task Handle_ValidRequest_CreatesModuleAndPublishesEvents()
         {
             // Arrange
-            var request = new CreateModuleCommand(Guid.NewGuid(), "Test Module", "Test Description", []);
+            var request = new CreateModuleCommand(Guid.NewGuid(), "Test Module", "Test Description", [], Guid.NewGuid());
             var cancellationToken = CancellationToken.None;
             var userId = Guid.NewGuid();
 

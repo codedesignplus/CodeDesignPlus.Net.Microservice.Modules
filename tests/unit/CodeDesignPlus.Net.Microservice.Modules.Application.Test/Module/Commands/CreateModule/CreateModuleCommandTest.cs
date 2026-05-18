@@ -18,7 +18,7 @@ public class CreateModuleCommandTest
     [Fact]
     public void Should_Have_Error_When_Id_Is_Empty()
     {
-        var command = new CreateModuleCommand(Guid.Empty, "ValidName", "ValidDescription", []);
+        var command = new CreateModuleCommand(Guid.Empty, "ValidName", "ValidDescription", [], Guid.NewGuid());
         var result = validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Id);
     }
@@ -26,7 +26,7 @@ public class CreateModuleCommandTest
     [Fact]
     public void Should_Have_Error_When_Name_Is_Empty()
     {
-        var command = new CreateModuleCommand(Guid.NewGuid(), string.Empty, "ValidDescription", []);
+        var command = new CreateModuleCommand(Guid.NewGuid(), string.Empty, "ValidDescription", [], Guid.NewGuid());
         var result = validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
@@ -34,7 +34,7 @@ public class CreateModuleCommandTest
     [Fact]
     public void Should_Have_Error_When_Name_Exceeds_Max_Length()
     {
-        var command = new CreateModuleCommand(Guid.NewGuid(), new string('a', 129), "ValidDescription", []);
+        var command = new CreateModuleCommand(Guid.NewGuid(), new string('a', 129), "ValidDescription", [], Guid.NewGuid());
         var result = validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
@@ -42,7 +42,7 @@ public class CreateModuleCommandTest
     [Fact]
     public void Should_Have_Error_When_Description_Is_Empty()
     {
-        var command = new CreateModuleCommand(Guid.NewGuid(), "ValidName", string.Empty, []);
+        var command = new CreateModuleCommand(Guid.NewGuid(), "ValidName", string.Empty, [], Guid.NewGuid());
         var result = validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Description);
     }
@@ -50,7 +50,7 @@ public class CreateModuleCommandTest
     [Fact]
     public void Should_Have_Error_When_Description_Exceeds_Max_Length()
     {
-        var command = new CreateModuleCommand(Guid.NewGuid(), "ValidName", new string('a', 513), []);
+        var command = new CreateModuleCommand(Guid.NewGuid(), "ValidName", new string('a', 513), [], Guid.NewGuid());
         var result = validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Description);
     }
@@ -58,7 +58,7 @@ public class CreateModuleCommandTest
     [Fact]
     public void Should_Not_Have_Error_When_Command_Is_Valid()
     {
-        var command = new CreateModuleCommand(Guid.NewGuid(), "ValidName", "ValidDescription", []);
+        var command = new CreateModuleCommand(Guid.NewGuid(), "ValidName", "ValidDescription", [], Guid.NewGuid());
         var result = validator.TestValidate(command);
         result.ShouldNotHaveAnyValidationErrors();
     }
