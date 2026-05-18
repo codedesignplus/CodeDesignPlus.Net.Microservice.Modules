@@ -46,7 +46,7 @@ app.UseHealthChecks();
     
 app.UseAuth();
 
-app.MapGrpcService<ModuleService>().RequireAuthorization();
+app.MapGrpcService<ModuleService>();//.RequireAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
