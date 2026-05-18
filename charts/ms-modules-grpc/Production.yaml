@@ -1,0 +1,73 @@
+ms-base:
+  environment: Production
+  replicaCount: 1
+
+  image:
+    repository: codedesignplus/ms-modules-grpc
+    pullPolicy: IfNotPresent
+    tag: "v0.1.0-alpha.100"
+
+  imagePullSecrets: []
+  fullnameOverride: "ms-modules-grpc"
+  nameOverride: "ms-modules-grpc"
+
+  serviceAccount:
+    create: false
+    automount: true
+    annotations: {}
+    name: ""
+
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    ports:
+      - name: http
+        port: 5000
+        targetPort: http
+        protocol: TCP
+      - name: grpc
+        port: 5001
+        targetPort: grpc
+        protocol: TCP
+
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: modules-grpc.codedesignplus.com
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+
+  resources: {}
+
+  livenessProbe:
+    httpGet:
+      path: /health/live
+      port: http
+  readinessProbe:
+    httpGet:
+      path: /health/ready
+      port: http
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+
+  volumes: []
+  volumeMounts: []
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  virtualService:
+    create: false

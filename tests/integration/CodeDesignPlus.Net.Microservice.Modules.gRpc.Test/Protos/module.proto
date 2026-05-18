@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "CodeDesignPlus.Net.Microservice.Modules.gRpc.Test";
+
+package Module;
+
+
+service Module {
+  rpc GetModule (stream GetModuleRequest) returns (stream GetModuleResponse);
+}
+
+message GetModuleRequest {
+  string Id = 1;
+}
+
+message GetModuleResponse {
+
+}
