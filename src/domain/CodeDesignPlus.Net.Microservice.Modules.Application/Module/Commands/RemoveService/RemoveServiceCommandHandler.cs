@@ -10,7 +10,8 @@ public class RemoveServiceCommandHandler(IModuleRepository repository, IUserCont
 
         ApplicationGuard.IsNull(module, Errors.ModuleNotFound);
 
-        module.RemoveService(request.IdService, user.IdUser == Guid.Empty ? Guid.Parse("10000000-0000-0000-0000-000000000001") : user.IdUser);
+        Guid removedBy; try { removedBy = user.IdUser; } catch { removedBy = Guid.Empty; } if (removedBy == Guid.Empty) removedBy = Guid.Parse("10000000-0000-0000-0000-000000000001");
+        module.RemoveService(request.IdService, removedBy);
 
         await repository.UpdateAsync(module, cancellationToken);
 

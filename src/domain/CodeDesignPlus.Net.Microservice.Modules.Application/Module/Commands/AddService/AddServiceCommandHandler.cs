@@ -12,7 +12,8 @@ public class AddServiceCommandHandler(IModuleRepository repository, IUserContext
 
         ApplicationGuard.IsNull(module, Errors.ModuleNotFound);
 
-        module.AddService(request.IdService, request.Name, request.Controller, request.Action, request.HttpMethod, user.IdUser == Guid.Empty ? Guid.Parse("10000000-0000-0000-0000-000000000001") : user.IdUser);
+        Guid addedBy; try { addedBy = user.IdUser; } catch { addedBy = Guid.Empty; } if (addedBy == Guid.Empty) addedBy = Guid.Parse("10000000-0000-0000-0000-000000000001");
+        module.AddService(request.IdService, request.Name, request.Controller, request.Action, request.HttpMethod, addedBy);
 
         await repository.UpdateAsync(module, cancellationToken);
 

@@ -14,9 +14,10 @@ public class CreateModuleCommandHandler(IModuleRepository repository, IUserConte
 
         var services = mapper.Map<List<ServiceEntity>>(request.Services);
 
-        var createdBy = user.IdUser == Guid.Empty
-            ? Guid.Parse("10000000-0000-0000-0000-000000000001")
-            : user.IdUser;
+        Guid createdBy;
+        try { createdBy = user.IdUser; }
+        catch { createdBy = Guid.Parse("10000000-0000-0000-0000-000000000001"); }
+        if (createdBy == Guid.Empty) createdBy = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
         var module = ModuleAggregate.Create(request.Id, request.Name, request.Description, services, createdBy);
 

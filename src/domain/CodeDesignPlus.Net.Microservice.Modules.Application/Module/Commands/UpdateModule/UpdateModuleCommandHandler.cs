@@ -14,7 +14,8 @@ public class UpdateModuleCommandHandler(IModuleRepository repository, IUserConte
 
         var services = mapper.Map<List<ServiceEntity>>(request.Services);
 
-        module.Update(request.Name, request.Description, services, request.IsActive, user.IdUser == Guid.Empty ? Guid.Parse("10000000-0000-0000-0000-000000000001") : user.IdUser);
+        Guid updatedBy; try { updatedBy = user.IdUser; } catch { updatedBy = Guid.Empty; } if (updatedBy == Guid.Empty) updatedBy = Guid.Parse("10000000-0000-0000-0000-000000000001");
+        module.Update(request.Name, request.Description, services, request.IsActive, updatedBy);
 
         await repository.UpdateAsync(module, cancellationToken);
 
