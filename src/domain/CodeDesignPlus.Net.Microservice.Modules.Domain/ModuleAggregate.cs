@@ -8,8 +8,7 @@ public class ModuleAggregate(Guid id) : AggregateRootBase(id)
 
     public string Description { get; private set; } = null!;
 
-    private List<ServiceEntity> _services = [];
-    public List<ServiceEntity> Services { get => _services ??= []; private set => _services = value ?? []; }
+    public List<ServiceEntity> Services { get; private set; } = [];
 
     private ModuleAggregate(Guid id, string name, string description, List<ServiceEntity> services, Guid createdBy) : this(id)
     {
