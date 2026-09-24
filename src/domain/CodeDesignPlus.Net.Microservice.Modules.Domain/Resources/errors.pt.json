@@ -1,0 +1,16 @@
+{
+  "language": "pt",
+  "errors": {
+    "100": "Erro desconhecido.",
+    "101": "O identificador do módulo não é válido.",
+    "102": "O nome do módulo não é válido.",
+    "103": "A descrição do módulo não é válida.",
+    "104": "O identificador do usuário não é válido.",
+    "105": "O nome do serviço não é válido.",
+    "106": "O controlador do serviço não é válido.",
+    "107": "A ação do serviço não é válida.",
+    "108": "Não encontramos esse serviço.",
+    "109": "O identificador do serviço não é válido.",
+    "110": "O método HTTP do serviço não é válido."
+  }
+}

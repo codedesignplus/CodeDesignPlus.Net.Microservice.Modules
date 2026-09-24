@@ -1,0 +1,16 @@
+{
+  "language": "fr",
+  "errors": {
+    "100": "Erreur inconnue.",
+    "101": "L'identifiant du module n'est pas valide.",
+    "102": "Le nom du module n'est pas valide.",
+    "103": "La description du module n'est pas valide.",
+    "104": "L'identifiant de l'utilisateur n'est pas valide.",
+    "105": "Le nom du service n'est pas valide.",
+    "106": "Le contrôleur du service n'est pas valide.",
+    "107": "L'action du service n'est pas valide.",
+    "108": "Service introuvable.",
+    "109": "L'identifiant du service n'est pas valide.",
+    "110": "La méthode HTTP du service n'est pas valide."
+  }
+}

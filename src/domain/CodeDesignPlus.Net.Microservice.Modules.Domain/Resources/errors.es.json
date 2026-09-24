@@ -1,16 +1,16 @@
 {
   "language": "es",
   "errors": {
-    "100": "",
-    "101": "",
-    "102": "",
-    "103": "",
-    "104": "",
-    "105": "",
-    "106": "",
-    "107": "",
-    "108": "",
-    "109": "",
-    "110": ""
+    "100": "Error desconocido.",
+    "101": "El identificador del módulo no es válido.",
+    "102": "El nombre del módulo no es válido.",
+    "103": "La descripción del módulo no es válida.",
+    "104": "El identificador del usuario no es válido.",
+    "105": "El nombre del servicio no es válido.",
+    "106": "El controlador del servicio no es válido.",
+    "107": "La acción del servicio no es válida.",
+    "108": "No encontramos ese servicio.",
+    "109": "El identificador del servicio no es válido.",
+    "110": "El método HTTP del servicio no es válido."
   }
 }
