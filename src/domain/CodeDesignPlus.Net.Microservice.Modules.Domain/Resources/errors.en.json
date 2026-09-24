@@ -1,0 +1,16 @@
+{
+  "language": "en",
+  "errors": {
+    "100": "UnknownError",
+    "101": "The id of the module is invalid.",
+    "102": "The name of the module is invalid.",
+    "103": "The description of the module is invalid.",
+    "104": "The id of the user is invalid.",
+    "105": "The name of the service is invalid.",
+    "106": "The controller of the service is invalid.",
+    "107": "The action of the service is invalid.",
+    "108": "The service was not found.",
+    "109": "The id of the service is invalid.",
+    "110": "The http method of the service is invalid."
+  }
+}
