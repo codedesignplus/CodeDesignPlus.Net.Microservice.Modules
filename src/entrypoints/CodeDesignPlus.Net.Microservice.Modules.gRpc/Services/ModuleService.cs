@@ -17,7 +17,7 @@ public class ModuleService(IMediator mediator, IMapper mapper) : Module.ModuleBa
 
     public override async Task<Empty> CreateModule(CreateModuleRequest request, ServerCallContext context)
     {
-        DomainGuard.IsFalse(Guid.TryParse(request.Id, out var id), "Invalid module ID");
+        DomainGuard.IsFalse(Guid.TryParse(request.Id, out var id), Domain.Errors.IdModuleIsInvalid);
 
         var services = request.Services.Select(s => new ServiceDto
         {
@@ -37,7 +37,7 @@ public class ModuleService(IMediator mediator, IMapper mapper) : Module.ModuleBa
 
     public override async Task<Empty> UpdateModule(UpdateModuleRequest request, ServerCallContext context)
     {
-        DomainGuard.IsFalse(Guid.TryParse(request.Id, out var id), "Invalid module ID");
+        DomainGuard.IsFalse(Guid.TryParse(request.Id, out var id), Domain.Errors.IdModuleIsInvalid);
 
         var services = request.Services.Select(s => new ServiceDto
         {
@@ -57,7 +57,7 @@ public class ModuleService(IMediator mediator, IMapper mapper) : Module.ModuleBa
 
     public override async Task<Empty> DeleteModule(DeleteModuleRequest request, ServerCallContext context)
     {
-        DomainGuard.IsFalse(Guid.TryParse(request.Id, out var id), "Invalid module ID");
+        DomainGuard.IsFalse(Guid.TryParse(request.Id, out var id), Domain.Errors.IdModuleIsInvalid);
 
         await mediator.Send(new DeleteModuleCommand(id, SystemUserId), context.CancellationToken);
 
@@ -66,7 +66,7 @@ public class ModuleService(IMediator mediator, IMapper mapper) : Module.ModuleBa
 
     public override async Task<GetModuleResponse> GetModuleById(GetModuleByIdRequest request, ServerCallContext context)
     {
-        DomainGuard.IsFalse(Guid.TryParse(request.Id, out var id), "Invalid module ID");
+        DomainGuard.IsFalse(Guid.TryParse(request.Id, out var id), Domain.Errors.IdModuleIsInvalid);
 
         var module = await mediator.Send(new GetModuleByIdQuery(id), context.CancellationToken);
 
@@ -91,8 +91,8 @@ public class ModuleService(IMediator mediator, IMapper mapper) : Module.ModuleBa
 
     public override async Task<Empty> AddService(AddServiceRequest request, ServerCallContext context)
     {
-        DomainGuard.IsFalse(Guid.TryParse(request.ModuleId, out var moduleId), "Invalid module ID");
-        DomainGuard.IsFalse(Guid.TryParse(request.ServiceId, out var serviceId), "Invalid service ID");
+        DomainGuard.IsFalse(Guid.TryParse(request.ModuleId, out var moduleId), Domain.Errors.IdModuleIsInvalid);
+        DomainGuard.IsFalse(Guid.TryParse(request.ServiceId, out var serviceId), Domain.Errors.IdServiceIsInvalid);
 
         var httpMethod = System.Enum.TryParse<Domain.Enums.HttpMethod>(request.HttpMethod, true, out var method)
             ? method : Domain.Enums.HttpMethod.None;
@@ -106,8 +106,8 @@ public class ModuleService(IMediator mediator, IMapper mapper) : Module.ModuleBa
 
     public override async Task<Empty> RemoveService(RemoveServiceRequest request, ServerCallContext context)
     {
-        DomainGuard.IsFalse(Guid.TryParse(request.ModuleId, out var moduleId), "Invalid module ID");
-        DomainGuard.IsFalse(Guid.TryParse(request.ServiceId, out var serviceId), "Invalid service ID");
+        DomainGuard.IsFalse(Guid.TryParse(request.ModuleId, out var moduleId), Domain.Errors.IdModuleIsInvalid);
+        DomainGuard.IsFalse(Guid.TryParse(request.ServiceId, out var serviceId), Domain.Errors.IdServiceIsInvalid);
 
         await mediator.Send(new RemoveServiceCommand(moduleId, serviceId, SystemUserId), context.CancellationToken);
 
