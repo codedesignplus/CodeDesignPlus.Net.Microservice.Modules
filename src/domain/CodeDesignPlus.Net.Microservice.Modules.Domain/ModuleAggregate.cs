@@ -41,6 +41,7 @@ public class ModuleAggregate(Guid id) : AggregateRootBase(id)
         Name = name;
         Description = description;
         Services = services;
+        IsActive = isActive;
         UpdatedAt = SystemClock.Instance.GetCurrentInstant();
         UpdatedBy = updatedBy;
 

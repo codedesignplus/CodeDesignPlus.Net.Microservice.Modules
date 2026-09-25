@@ -55,6 +55,38 @@ public class ModuleAggregateTest
         Assert.Equal(newServices, module.Services);
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Update_IsActive_ShouldApplyStateAndPublishIt(bool isActive)
+    {
+        // Arrange
+        var module = ModuleAggregate.Create(Guid.NewGuid(), "Test Module", "Test Description", [], Guid.NewGuid());
+        module.GetAndClearEvents();
+
+        // Act
+        module.Update("Test Module", "Test Description", [], isActive, Guid.NewGuid());
+
+        // Assert
+        Assert.Equal(isActive, module.IsActive);
+        var updated = Assert.IsType<ModuleUpdatedDomainEvent>(Assert.Single(module.GetAndClearEvents()));
+        Assert.Equal(isActive, updated.IsActive);
+    }
+
+    [Fact]
+    public void Update_Reactivate_ShouldTurnAnInactiveModuleActiveAgain()
+    {
+        // Arrange
+        var module = ModuleAggregate.Create(Guid.NewGuid(), "Test Module", "Test Description", [], Guid.NewGuid());
+        module.Update("Test Module", "Test Description", [], false, Guid.NewGuid());
+
+        // Act
+        module.Update("Test Module", "Test Description", [], true, Guid.NewGuid());
+
+        // Assert
+        Assert.True(module.IsActive);
+    }
+
     [Fact]
     public void Delete_ValidParameters_ShouldDeactivateModuleAggregate()
     {
