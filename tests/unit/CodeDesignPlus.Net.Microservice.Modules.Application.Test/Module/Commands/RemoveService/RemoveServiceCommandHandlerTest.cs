@@ -11,7 +11,6 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
 public class RemoveServiceCommandHandlerTest
 {
     private readonly Mock<IModuleRepository> repositoryMock;
-    private readonly Mock<IUserContext> userContextMock;
     private readonly Mock<IPubSub> pubSubMock;
     private readonly Mock<ICacheManager> cacheManagerMock;
     private readonly RemoveServiceCommandHandler handler;
@@ -27,7 +26,6 @@ public class RemoveServiceCommandHandlerTest
     public RemoveServiceCommandHandlerTest()
     {
         repositoryMock = new Mock<IModuleRepository>();
-        userContextMock = new Mock<IUserContext>();
         pubSubMock = new Mock<IPubSub>();
         cacheManagerMock = new Mock<ICacheManager>();
         handler = new RemoveServiceCommandHandler(repositoryMock.Object, pubSubMock.Object, cacheManagerMock.Object);
@@ -56,7 +54,7 @@ public class RemoveServiceCommandHandlerTest
         var cancellationToken = CancellationToken.None;
 
         repositoryMock
-            .Setup(r => r.FindAsync<ModuleAggregate>(request.Id, userContextMock.Object.Tenant, cancellationToken))
+            .Setup(r => r.FindAsync<ModuleAggregate>(request.Id, cancellationToken))
             .ReturnsAsync((ModuleAggregate)null!);
 
         // Act & Assert
@@ -76,17 +74,14 @@ public class RemoveServiceCommandHandlerTest
         var module = ModuleAggregate.Create(request.Id, "TestModule", "TestDescription", [service], Guid.NewGuid());
 
         repositoryMock
-            .Setup(r => r.FindAsync<ModuleAggregate>(request.Id, userContextMock.Object.Tenant, cancellationToken))
+            .Setup(r => r.FindAsync<ModuleAggregate>(request.Id, cancellationToken))
             .ReturnsAsync(module);
-
-        userContextMock
-            .SetupGet(u => u.IdUser)
-            .Returns(Guid.NewGuid());
 
         // Act
         await handler.Handle(request, cancellationToken);
 
         // Assert
+        Assert.DoesNotContain(module.Services, x => x.Id == service.Id);
         repositoryMock.Verify(r => r.UpdateAsync(module, cancellationToken), Times.Once);
         pubSubMock.Verify(p => p.PublishAsync(It.IsAny<List<ServiceRemovedDomainEvent>>(), cancellationToken), Times.AtMostOnce);
     }
