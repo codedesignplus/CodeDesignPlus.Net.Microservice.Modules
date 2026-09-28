@@ -8,7 +8,7 @@ public class Validator : AbstractValidator<AddServiceCommand>
     public Validator()
     {
         RuleFor(x => x.Id).NotEmpty().NotNull();
-        RuleFor(x => x.Name).NotEmpty().NotNull().MaximumLength(128);
+        RuleFor(x => x.Name).NotEmpty().NotNull().MaximumLength(FieldLength.Name);
         RuleFor(x => x.Controller).NotEmpty().NotNull().MaximumLength(64);
         RuleFor(x => x.Action).NotEmpty().NotNull().MaximumLength(64);
         RuleFor(x => x.HttpMethod).IsInEnum().NotEqual(Domain.Enums.HttpMethod.None);
