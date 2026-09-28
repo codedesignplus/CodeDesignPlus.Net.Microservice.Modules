@@ -14,10 +14,14 @@ RUN apt-get update \
 
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["nuget.config", "nuget.config"]
+COPY ["src/domain/CodeDesignPlus.Net.Microservice.Modules.Application/CodeDesignPlus.Net.Microservice.Modules.Application.csproj", "domain/CodeDesignPlus.Net.Microservice.Modules.Application/"]
+COPY ["src/domain/CodeDesignPlus.Net.Microservice.Modules.Domain/CodeDesignPlus.Net.Microservice.Modules.Domain.csproj", "domain/CodeDesignPlus.Net.Microservice.Modules.Domain/"]
+COPY ["src/domain/CodeDesignPlus.Net.Microservice.Modules.Infrastructure/CodeDesignPlus.Net.Microservice.Modules.Infrastructure.csproj", "domain/CodeDesignPlus.Net.Microservice.Modules.Infrastructure/"]
+COPY ["src/entrypoints/CodeDesignPlus.Net.Microservice.Modules.gRpc/CodeDesignPlus.Net.Microservice.Modules.gRpc.csproj", "entrypoints/CodeDesignPlus.Net.Microservice.Modules.gRpc/"]
+RUN dotnet restore "./entrypoints/CodeDesignPlus.Net.Microservice.Modules.gRpc/CodeDesignPlus.Net.Microservice.Modules.gRpc.csproj"
 COPY ["src/domain/", "domain/"]
 COPY ["src/entrypoints/CodeDesignPlus.Net.Microservice.Modules.gRpc/", "entrypoints/CodeDesignPlus.Net.Microservice.Modules.gRpc/"]
-COPY ["nuget.config", "nuget.config"]
-RUN dotnet restore "./entrypoints/CodeDesignPlus.Net.Microservice.Modules.gRpc/CodeDesignPlus.Net.Microservice.Modules.gRpc.csproj"
 
 WORKDIR "/src/entrypoints/CodeDesignPlus.Net.Microservice.Modules.gRpc"
 RUN dotnet build "./CodeDesignPlus.Net.Microservice.Modules.gRpc.csproj" -c "$BUILD_CONFIGURATION" -o /app/build
