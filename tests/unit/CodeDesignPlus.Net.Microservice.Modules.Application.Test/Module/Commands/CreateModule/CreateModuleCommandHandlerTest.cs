@@ -42,7 +42,7 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
         }
 
         [Fact]
-        public async Task Handle_ModuleAlreadyExists_ThrowsCodeDesignPlusException()
+        public async Task Handle_ModuleAlreadyExists_IsTheRetryAndDoesNotCreateItAgain()
         {
             // Arrange
             var request = new CreateModuleCommand(Guid.NewGuid(), "Test Module", "Test Description", [], Guid.NewGuid());
@@ -50,12 +50,11 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
 
             repositoryMock.Setup(x => x.ExistsAsync<ModuleAggregate>(request.Id, cancellationToken)).ReturnsAsync(true);
 
-            // Act & Assert
-            var exception = await Assert.ThrowsAsync<CodeDesignPlusException>(() => handler.Handle(request, cancellationToken));
+            // Act: el mismo id es el reintento del mismo formulario (pendings/589, regla 66), no un error.
+            await handler.Handle(request, cancellationToken);
 
-            Assert.Equal(Errors.ModuleAlreadyExists.GetMessage(), exception.Message);
-            Assert.Equal(Errors.ModuleAlreadyExists.GetCode(), exception.Code);
-            Assert.Equal(Layer.Application, exception.Layer);
+            // Assert
+            repositoryMock.Verify(x => x.CreateIfAbsentAsync(It.IsAny<ModuleAggregate>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Fact]
@@ -74,7 +73,7 @@ namespace CodeDesignPlus.Net.Microservice.Modules.Application.Test.Module.Comman
             await handler.Handle(request, cancellationToken);
 
             // Assert
-            repositoryMock.Verify(x => x.CreateAsync(It.IsAny<ModuleAggregate>(), cancellationToken), Times.Once);
+            repositoryMock.Verify(x => x.CreateIfAbsentAsync(It.IsAny<ModuleAggregate>(), cancellationToken), Times.Once);
             pubSubMock.Verify(x => x.PublishAsync(It.IsAny<List<ModuleCreatedDomainEvent>>(), cancellationToken), Times.AtMostOnce);
         }
     }
