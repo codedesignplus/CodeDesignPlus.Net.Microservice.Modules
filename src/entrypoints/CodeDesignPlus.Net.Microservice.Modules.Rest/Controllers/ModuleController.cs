@@ -1,3 +1,6 @@
+using CodeDesignPlus.Net.Core.Abstractions.Models.Pager;
+using CodeDesignPlus.Net.Microservice.Modules.Application.Module.DataTransferObjects;
+
 namespace CodeDesignPlus.Net.Microservice.Modules.Rest.Controllers;
 
 /// <summary>
@@ -14,6 +17,7 @@ public class ModuleController(IMediator mediator, IMapper mapper, IUserContext u
     /// Get all Modules.
     /// </summary>
     [HttpGet]
+    [ProducesResponseType<Pagination<ModuleDto>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetModules([FromQuery] C.Criteria criteria, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetAllModuleQuery(criteria), cancellationToken);
@@ -24,6 +28,7 @@ public class ModuleController(IMediator mediator, IMapper mapper, IUserContext u
     /// Get a Module by its ID.
     /// </summary>
     [HttpGet("{id}")]
+    [ProducesResponseType<ModuleDto>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetModuleById(Guid id, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetModuleByIdQuery(id), cancellationToken);
